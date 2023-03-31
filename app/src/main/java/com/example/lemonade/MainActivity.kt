@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.colorspace.Illuminant.A
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,19 +32,30 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LemonadeTheme {
+                var imageSource = R.drawable.lemon_tree
+
+                @Composable
+                fun goToLemon() : Unit {
+                  imageSource = R.drawable.lemon_squeeze
+                }
 
                 Column(modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "Tap the lemon tree to select a lemon", fontSize = 18.sp)
                     Spacer(modifier = Modifier.size(16.dp))
-                    Image(painter = painterResource(R.drawable.lemon_tree), contentDescription = "Lemon Tree",
-                        modifier = Modifier.border(
-                            BorderStroke(2.dp, Color(105, 205, 216)),
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                    //105.205.216
-                        )
+                    Image(painter = painterResource(imageSource), contentDescription = "Lemon Tree",
+                        modifier = Modifier
+                            .border(
+                                BorderStroke(2.dp, Color(105, 205, 216)),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .clickable(onClick = {println("hey")})
+                    )
                 }
+
+
+
+
 
             }
         }
