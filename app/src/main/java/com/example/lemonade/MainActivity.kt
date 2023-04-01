@@ -13,7 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,33 +32,99 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LemonadeTheme {
-                var imageSource = R.drawable.lemon_tree
-
-                @Composable
-                fun goToLemon() : Unit {
-                  imageSource = R.drawable.lemon_squeeze
-                }
-
-                Column(modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Tap the lemon tree to select a lemon", fontSize = 18.sp)
-                    Spacer(modifier = Modifier.size(16.dp))
-                    Image(painter = painterResource(imageSource), contentDescription = "Lemon Tree",
-                        modifier = Modifier
-                            .border(
-                                BorderStroke(2.dp, Color(105, 205, 216)),
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                            .clickable(onClick = {println("hey")})
-                    )
-                }
-
-
-
-
-
+                LemonadeApp()
             }
         }
     }
 }
+
+
+@Composable
+fun LemonadeApp() {
+
+    var Step by remember { mutableStateOf(1) }
+    var count by remember { mutableStateOf(0) }
+
+
+
+    when (Step) {
+        1 -> {
+            Column(modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                Text(text = "Tap the lemon tree to select a lemon", fontSize = 18.sp)
+                Spacer(modifier = Modifier.size(16.dp))
+                Image(painter = painterResource(R.drawable.lemon_tree), contentDescription = "Lemon Tree",
+                    modifier = Modifier
+                        .border(
+                            BorderStroke(2.dp, Color(105, 205, 216)),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .clickable(onClick = {
+                            Step = 2
+                            count = (2..4).random()
+                        })
+                )
+            }//Конец содержания колонки
+        }//Конец состояния 1
+        2 -> {
+            Column(modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                Text(text = "Keep tapping the lemon to squeeze it", fontSize = 18.sp)
+                Spacer(modifier = Modifier.size(16.dp))
+                Image(painter = painterResource(R.drawable.lemon_squeeze), contentDescription = "Lemon squeeze",
+                    modifier = Modifier
+                        .border(
+                            BorderStroke(2.dp, Color(105, 205, 216)),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .clickable(onClick = {
+                            count--
+                            when (count) {
+                                0 -> {Step = 3}
+                            }
+                        })
+                )
+            }
+        } //Конец состояния 2
+        3 -> {
+            Column(modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                Text(text = "Tap the lemonade to drink it", fontSize = 18.sp)
+                Spacer(modifier = Modifier.size(16.dp))
+                Image(painter = painterResource(R.drawable.lemon_drink), contentDescription = "Lemon drink",
+                    modifier = Modifier
+                        .border(
+                            BorderStroke(2.dp, Color(105, 205, 216)),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .clickable(onClick = { Step = 4 })
+                )
+            }
+        }//Конец состояния 3
+
+        4 -> {
+            Column(modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                Text(text = "Tap the empty glass to start again", fontSize = 18.sp)
+                Spacer(modifier = Modifier.size(16.dp))
+                Image(painter = painterResource(R.drawable.lemon_restart), contentDescription = "Lemon restart",
+                    modifier = Modifier
+                        .border(
+                            BorderStroke(2.dp, Color(105, 205, 216)),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .clickable(onClick = { Step = 1 }))
+        }
+      }
+    }//Конец описания ВСЕХ состояний
+
+
+
+} //Конец app fun
+
+//
 
