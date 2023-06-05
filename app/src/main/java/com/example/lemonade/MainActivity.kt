@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LemonadeApp() {
 
-    var Step by remember { mutableStateOf(1) }
-    var count by remember { mutableStateOf(0) }
+    var Step by remember { mutableStateOf(1) } //изначально находимся на первом шаге (лимонное дерево)
+    var count by remember { mutableStateOf(0) } //с нулевым счетчиком
 
 
 
@@ -61,8 +61,8 @@ fun LemonadeApp() {
                             shape = RoundedCornerShape(4.dp)
                         )
                         .clickable(onClick = {
-                            Step = 2
-                            count = (2..4).random()
+                            Step = 2 //при клике переходим на шаг 2 (лимон)
+                            count = (2..4).random() //счетчик вместо нуля становится равен от 1 до 4
                         })
                 )
             }//Конец содержания колонки
