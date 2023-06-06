@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lemonade.data.Data
 import com.example.lemonade.ui.theme.LemonadeTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,6 +37,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 
@@ -46,48 +48,53 @@ fun LemonadeApp() {
     var count by remember { mutableStateOf(0) } //с нулевым счетчиком
 
 
+    val updateStep: (Int) -> Unit = { newStep -> Step = newStep }
+    val updateCount: (Int) -> Unit = { newCount -> count = newCount }
 
     when (Step) {
+
         1 -> {
-            Column(modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                Text(text = "Tap the lemon tree to select a lemon", fontSize = 18.sp)
-                Spacer(modifier = Modifier.size(16.dp))
-                Image(painter = painterResource(R.drawable.lemon_tree), contentDescription = "Lemon Tree",
-                    modifier = Modifier
-                        .border(
-                            BorderStroke(2.dp, Color(105, 205, 216)),
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                        .clickable(onClick = {
-                            Step = 2 //при клике переходим на шаг 2 (лимон)
-                            count = (2..4).random() //счетчик вместо нуля становится равен от 1 до 4
-                        })
-                )
-            }//Конец содержания колонки
+          val firstState =  Data("Tap the lemon tree to select a lemon",
+                painterResource(R.drawable.lemon_tree),
+                "Lemon Tree",
+                2, classCount =  (2..4).random() , updateStep = updateStep,
+                updateCount = updateCount
+            )
+          firstState.UI_generalizing()
         }//Конец состояния 1
+
         2 -> {
-            Column(modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                Text(text = "Keep tapping the lemon to squeeze it", fontSize = 18.sp)
-                Spacer(modifier = Modifier.size(16.dp))
-                Image(painter = painterResource(R.drawable.lemon_squeeze), contentDescription = "Lemon squeeze",
-                    modifier = Modifier
-                        .border(
-                            BorderStroke(2.dp, Color(105, 205, 216)),
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                        .clickable(onClick = {
-                            count--
-                            when (count) {
-                                0 -> {Step = 3}
-                            }
-                        })
+
+            val secondState = Data("Keep tapping the lemon to squeeze it",
+                painterResource(R.drawable.lemon_squeeze),
+                "Lemon squeeze",
+                3, classCount = count--, updateStep = updateStep,
+                updateCount = updateCount
                 )
-            }
+            secondState.UI_generalizing()
+//            Column(modifier = Modifier.fillMaxSize(),
+//                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
+//            {
+//                Text(text = "Keep tapping the lemon to squeeze it", fontSize = 18.sp)
+//                Spacer(modifier = Modifier.size(16.dp))
+//                Image(painter = painterResource(R.drawable.lemon_squeeze), contentDescription = "Lemon squeeze",
+//                    modifier = Modifier
+//                        .border(
+//                            BorderStroke(2.dp, Color(105, 205, 216)),
+//                            shape = RoundedCornerShape(4.dp)
+//                        )
+//                        .clickable(onClick = {
+//                            count-- //счетчик, который на прошлом шаге стал от 1 до 4
+//                            when (count) { //уменьшается с каждым кликом, и в зависимости от того
+//                                0 -> {
+//                                    Step = 3
+//                                } //какое было число, столько кликов что бы дойти до 0
+//                            } //и перейти Step 3 (стать стаканом лимонада)
+//                        })
+//                )
+//            }
         } //Конец состояния 2
+
         3 -> {
             Column(modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
@@ -100,8 +107,8 @@ fun LemonadeApp() {
                             BorderStroke(2.dp, Color(105, 205, 216)),
                             shape = RoundedCornerShape(4.dp)
                         )
-                        .clickable(onClick = { Step = 4 })
-                )
+                        .clickable(onClick = { Step = 4 }) //тут ничё хитрого 1 клик и на слеющий степ
+                ) //т.е. на пустой стакан
             }
         }//Конец состояния 3
 
@@ -117,8 +124,8 @@ fun LemonadeApp() {
                             BorderStroke(2.dp, Color(105, 205, 216)),
                             shape = RoundedCornerShape(4.dp)
                         )
-                        .clickable(onClick = { Step = 1 }))
-        }
+                        .clickable(onClick = { Step = 1 })) //и тут ничё хитрого - пустой скан возвращает
+        } //к лимонному дереву, в начало
       }
     }//Конец описания ВСЕХ состояний
 
