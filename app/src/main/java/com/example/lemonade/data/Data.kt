@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.sp
 class Data (val textAbove:String,
             val img:Painter,
             val descrOfImg:String,
-            val step:Int,
-            val classCount:Int,
+            val step:Int, //значение которое будет передано в updateStep, позже в переменную Step
+            var classCount:Int,//значение которое будет передано в updateCount, позже в переменную count
             private val updateStep: (Int) -> Unit,
             private val updateCount: (Int) -> Unit
                                 ) {
@@ -41,6 +41,7 @@ public fun UI_generalizing(){
                         shape = RoundedCornerShape(4.dp)
                     )
                     .clickable(onClick = {
+                        if (step == 2) {classCount--}
                         updateStep(step)
                         updateCount(classCount)
                     })
