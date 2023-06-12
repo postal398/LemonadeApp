@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import com.example.lemonade.data.Data
@@ -29,8 +30,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LemonadeApp() {
 
-    var Step by remember { mutableStateOf(1) } //изначально находимся на первом шаге (лимонное дерево)
-    var count by remember { mutableStateOf(0) } //с нулевым счетчиком кликов (для перехода со степ 2 на степ 3)
+    var Step by rememberSaveable { mutableStateOf(1) } //изначально находимся на первом шаге (лимонное дерево)
+    var count by rememberSaveable { mutableStateOf(0) } //с нулевым счетчиком кликов (для перехода со степ 2 на степ 3)
 
 
     val updateStep: (Int) -> Unit = { newStep -> Step = newStep }
