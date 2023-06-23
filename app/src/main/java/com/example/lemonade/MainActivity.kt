@@ -32,8 +32,8 @@ fun LemonadeApp() {
 
     val viewModel: LemonadeViewModel = viewModel() //экземпляр класса ViewModel именно внутри Composable функции.
 
-    val updateStep: (Int) -> Unit = { newStep -> viewModel.updateStep(newStep) } //лямбда для передачи обновления шага вьюмодель
-    val updateCount: (Int) -> Unit = { newCount -> viewModel.updateCount(newCount) } //лямбда для передачи обновления счетчика
+    val updateStep: (Int) -> Unit = { newStep -> viewModel.updateStep(newStep) } //лямбда для передачи обновления шага во VM
+    val updateCount: (Int) -> Unit = { newCount -> viewModel.updateCount(newCount) } //лямбда для передачи обновления счетчика во VM
 
 
     when (viewModel.step.value) { //получаем шаг из вьюМодели
@@ -43,7 +43,7 @@ fun LemonadeApp() {
                 painterResource(R.drawable.lemon_tree),
                 "Lemon Tree",
                 2, classCount =  (2..4).random() , updateStep = updateStep, //count будет равен числу от 1 до 4
-                updateCount = updateCount //при клике step = 2, и переход к тому что ниже
+                updateCount = updateCount //при клике step = 2 (лямда берёт закодированный изначально 2, и переход к тому что ниже
             )
           firstState.UI_generalizing()
         }//Конец состояния 1

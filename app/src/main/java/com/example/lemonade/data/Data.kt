@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.sp
 class Data (val textAbove:String, //пишем вручную прямо в Composable функции
             val img:Painter, // пишем вручную прямо в Composable функции
             val descrOfImg:String, // пишем вручную прямо в Composable функции
-            val step:Int, //значение которое будет передано в updateStep, позже в переменную Step
-            var classCount:Int,//значение которое будет передано в updateCount, позже в переменную count
+            val step:Int, //значение которое будет передано в updateStep, позже в переменную Step (которая во VM)
+            var classCount:Int,//значение которое будет передано в updateCount, позже в переменную count (которая во VM)
             private val updateStep: (Int) -> Unit, //лямбда для инкапсуляции, в Composable одноимённо
             private val updateCount: (Int) -> Unit //лямбда для инкапсуляции, в Composable одноимённо
                                 ) {
@@ -42,8 +42,9 @@ public fun UI_generalizing(){ //То что будет на экране
                     )
                     .clickable(onClick = { //При клике на картинку
                         if (step == 2) {classCount--} //Если шаг 2, то уменьшаем счётчик, что бы жать типа сок из лимона
+                        //И когда он скликается до 0,в самом Composable произойдет переключение шага (костыль конечно)
                         updateStep(step) //Если это не лимон, то передаем при клике на следующей степ
-                        updateCount(classCount)
+                        updateCount(classCount) //берём classСount и отправляем во VM
                     })
             )
         }//Конец содержания колонки
