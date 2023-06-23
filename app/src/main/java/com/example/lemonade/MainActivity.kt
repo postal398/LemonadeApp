@@ -10,7 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lemonade.data.Data
+import com.example.lemonade.ui.LemonadeViewModel
 import com.example.lemonade.ui.theme.LemonadeTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,12 +32,19 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LemonadeApp() {
 
-    var Step by rememberSaveable { mutableStateOf(1) } //изначально находимся на первом шаге (лимонное дерево)
-    var count by rememberSaveable { mutableStateOf(0) } //с нулевым счетчиком кликов (для перехода со степ 2 на степ 3)
+    val viewModel: LemonadeViewModel = viewModel() //экземпляр класса ViewModel именно внутри Composable функции.
 
+    val Step by viewModel.step  //Step берется из viewModel
+    val count by viewModel.count //count берется из viewModel
 
-    val updateStep: (Int) -> Unit = { newStep -> Step = newStep }
-    val updateCount: (Int) -> Unit = { newCount -> count = newCount }
+//    var Step by rememberSaveable { mutableStateOf(1) } //изначально находимся на первом шаге (лимонное дерево)
+//    var count by rememberSaveable { mutableStateOf(0) } //с нулевым счетчиком кликов (для перехода со степ 2 на степ 3)
+
+    val updateStep: (Int) -> Unit = { newStep -> viewModel.updateStep(newStep) }
+    val updateCount: (Int) -> Unit = { newCount -> viewModel.updateCount(newCount) }
+
+//    val updateStep: (Int) -> Unit = { newStep -> Step = newStep }
+//    val updateCount: (Int) -> Unit = { newCount -> count = newCount }
 
 
 
