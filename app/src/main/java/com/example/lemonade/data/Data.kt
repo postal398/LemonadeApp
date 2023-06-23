@@ -19,16 +19,16 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class Data (val textAbove:String,
-            val img:Painter,
-            val descrOfImg:String,
+class Data (val textAbove:String, //пишем вручную прямо в Composable функции
+            val img:Painter, // пишем вручную прямо в Composable функции
+            val descrOfImg:String, // пишем вручную прямо в Composable функции
             val step:Int, //значение которое будет передано в updateStep, позже в переменную Step
             var classCount:Int,//значение которое будет передано в updateCount, позже в переменную count
-            private val updateStep: (Int) -> Unit,
-            private val updateCount: (Int) -> Unit
+            private val updateStep: (Int) -> Unit, //лямбда для инкапсуляции, в Composable одноимённо
+            private val updateCount: (Int) -> Unit //лямбда для инкапсуляции, в Composable одноимённо
                                 ) {
 @Composable
-public fun UI_generalizing(){
+public fun UI_generalizing(){ //То что будет на экране
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally)
         {
@@ -40,9 +40,9 @@ public fun UI_generalizing(){
                         BorderStroke(2.dp, Color(105, 205, 216)),
                         shape = RoundedCornerShape(4.dp)
                     )
-                    .clickable(onClick = {
-                        if (step == 2) {classCount--}
-                        updateStep(step)
+                    .clickable(onClick = { //При клике на картинку
+                        if (step == 2) {classCount--} //Если шаг 2, то уменьшаем счётчик, что бы жать типа сок из лимона
+                        updateStep(step) //Если это не лимон, то передаем при клике на следующей степ
                         updateCount(classCount)
                     })
             )

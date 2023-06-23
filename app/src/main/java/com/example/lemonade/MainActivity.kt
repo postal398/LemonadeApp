@@ -25,31 +25,18 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
 }
-
 
 @Composable
 fun LemonadeApp() {
 
     val viewModel: LemonadeViewModel = viewModel() //экземпляр класса ViewModel именно внутри Composable функции.
 
-    val Step by viewModel.step  //Step берется из viewModel
-    val count by viewModel.count //count берется из viewModel
-
-//    var Step by rememberSaveable { mutableStateOf(1) } //изначально находимся на первом шаге (лимонное дерево)
-//    var count by rememberSaveable { mutableStateOf(0) } //с нулевым счетчиком кликов (для перехода со степ 2 на степ 3)
-
-    val updateStep: (Int) -> Unit = { newStep -> viewModel.updateStep(newStep) }
-    val updateCount: (Int) -> Unit = { newCount -> viewModel.updateCount(newCount) }
-
-//    val updateStep: (Int) -> Unit = { newStep -> Step = newStep }
-//    val updateCount: (Int) -> Unit = { newCount -> count = newCount }
+    val updateStep: (Int) -> Unit = { newStep -> viewModel.updateStep(newStep) } //лямбда для передачи обновления шага вьюмодель
+    val updateCount: (Int) -> Unit = { newCount -> viewModel.updateCount(newCount) } //лямбда для передачи обновления счетчика
 
 
-
-
-    when (Step) {
+    when (viewModel.step.value) { //получаем шаг из вьюМодели
 
         1 -> {
           val firstState =  Data("Tap the lemon tree to select a lemon",
@@ -61,19 +48,17 @@ fun LemonadeApp() {
           firstState.UI_generalizing()
         }//Конец состояния 1
 
-
         2 -> {
             var decrementStep = 2 //шаг кодируем, потому что он будет меняться от кликов
-            if (count == 0) {decrementStep = 3} //когда счетчик заданный сверху (Int от 1 до 4) скликается до 0, степ будет = 3
+            if (viewModel.count.value == 0) {decrementStep = 3} //когда счетчик заданный сверху (Int от 1 до 4) скликается до 0, степ будет = 3
             val secondState = Data("Keep tapping the lemon to squeeze it",
                 painterResource(R.drawable.lemon_squeeze),
                 "Lemon squeeze",
-                decrementStep, classCount = count, updateStep = updateStep,
+                decrementStep, classCount = viewModel.count.value, updateStep = updateStep,
                 updateCount = updateCount
                 )
             secondState.UI_generalizing()
         } //Конец состояния 2
-
 
         3 -> {
 
@@ -81,7 +66,7 @@ fun LemonadeApp() {
                 "Tap the lemonade to drink it",
                 painterResource(R.drawable.lemon_drink),
                 "Lemon drink",
-                4, count, updateStep = updateStep, updateCount = updateCount
+                4, viewModel.count.value, updateStep = updateStep, updateCount = updateCount
             )
             thirdState.UI_generalizing()
         }//Конец состояния 3
@@ -91,7 +76,7 @@ fun LemonadeApp() {
             val fourthState = Data("Tap the empty glass to start again",
                 painterResource(R.drawable.lemon_restart),
                 "Lemon restart",
-                1, count, updateStep = updateStep, updateCount = updateCount
+                1, viewModel.count.value, updateStep = updateStep, updateCount = updateCount
                 )
             fourthState.UI_generalizing()
       }//Конец состояния 4
@@ -100,6 +85,4 @@ fun LemonadeApp() {
 
 
 } //Конец app fun
-
-//
 
